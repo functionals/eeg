@@ -1,7 +1,7 @@
-l:sentence:-read(49).
 l:sentence-->(l:noun_p,l:verb_p);((l:noun_p),(l:prep_p),(l:word));((l:verb),(l:noun_p),(l:prep_p),(l:word)).
-l:sentence(Number)-->l:noun_p(Number),l:verb_p(Number).
 l:sentence:-((idea);(question;command)),((l:noun_p),l:prep_p,l:verb_p).
+l:sentence:-read(49).
+l:sentence(Number)-->l:noun_p(Number),l:verb_p(Number).
 l:word(Char|((Char,String);Rest))-->l:letter(Char|String,Char),l:grab_l((Char|Rest,Rest),(Char|String,String)),form_w(Char|String,String).
 l:verb_p-->l:verb,l:noun_p.
 l:verb_p(Number)-->l:verb(Number),l:noun_p(Number).
@@ -43,7 +43,7 @@ getletters(46,[],46):-!.
 getletters(32,[],32):-!.
 getletters(Let,[Let|Letters],Nextchar):-get0(Char),getletters(Char,Letters,Nextchar).
 :-op(1200,xfy,(-:-)).
-copy_list([X|Y]-:-[X|Z]):-copy_list(Y-:-Z),tell([a]).
+
 options:-write('Your Choice is either 1 or 2, enter 1 for sentence forms and 2 to stream input in english'),nl,options_display(49),options_choose(49),nl.
 options_display(49):-sentence.
 options_display(49):-get(49),nl.
@@ -52,7 +52,17 @@ options_choose_aux(First,Last,Result,Char):-Char>=First,Char=<Last,!,options_sel
 options_choose_aux(First,Last,Result,_):-put(7),put(13),options,nl,display(First),nl,display(Last),nl,display(Result).
 options_select(First,Char,Result):-NewFirst is First+1,options_select(NewFirst,Char,Result).
 sentence:-copy_list(idea-:-command).
+sentence:-l:sentence.
 copy_list([]-:-[]).
+copy_list([X|Y]-:-[X|Z]):-copy_list(Y-:-Z),tell([a]).
 display(options):-start.
 start:-(options->options_display(49)).
-sentence:-l:sentence.
+
+:-dynamic l:grab/2.
+:-dynamic l:letter/2.
+:-dynamic l:noun_p/0.
+:- dynamic l:prep_p/0.
+:-dynamic l:verb_p/0.
+:-dynamic l:word/4.
+:-dynamic l:grab_l/2.
+

@@ -1,12 +1,14 @@
-l:sentence-->(l:noun_p,l:verb_p);((l:noun_p),(l:prep_p),l:word);((l:verb),(l:noun_p),(l:prep_p),(l:word)).
+sentence:-copy_list(idea-:-command).
+sentence:-l:sentence.
 l:sentence:-((idea);(question;command)),((l:noun_p),l:prep_p,l:verb_p).
 l:sentence:-read(49).
 l:sentence:-objective(_).
 l:sentence:-(l:noun_p,l:verb_p);((l:noun_p),(l:prep_p),(l:word));((l:verb),(l:noun_p),(l:prep_p),(l:word)).
 l:sentence(Number)-->l:noun_p(Number),l:verb_p(Number).
-l:sentence(Wordlist,String):-getsentence(Wordlist),objective(String|Wordlist).
 l:sentence(Wordlist,String):-l:grab(l:sentence,l:word(Wordlist,String,objective)).
 l:sentence(Wordlist,String):-l:word(Wordlist,input,String).
+l:sentence(Wordlist,String):-getsentence(Wordlist),objective(String|Wordlist).
+l:sentence-->(l:noun_p,l:verb_p);((l:noun_p),(l:prep_p),l:word);((l:verb),(l:noun_p),(l:prep_p),(l:word)).
 l:word(Char|((Char,String);Rest))-->l:letter(Char|String,Char),l:grab_l((Char|Rest,Rest),(Char|String,String)),form_w(Char|String,String).
 l:verb_p-->l:verb,l:noun_p.
 l:verb_p(Number)-->l:verb(Number),l:noun_p(Number).
@@ -58,8 +60,6 @@ options_choose(49):-read(49)->l:sentence,display(l:sentence),options_choose_aux(
 options_choose_aux(First,Last,Result,Char):-Char>=First,Char=<Last,!,options_select(First,Char,Result).
 options_choose_aux(First,Last,Result,_):-put(7),put(13),options,nl,display(First),nl,display(Last),nl,display(Result).
 options_select(First,Char,Result):-NewFirst is First+1,options_select(NewFirst,Char,Result).
-sentence:-copy_list(idea-:-command).
-sentence:-l:sentence.
 copy_list([]-:-[]).
 copy_list([X|Y]-:-[X|Z]):-copy_list(Y-:-Z),tell([a]).
 display(options):-start.
